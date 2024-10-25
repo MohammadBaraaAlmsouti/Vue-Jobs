@@ -1,10 +1,28 @@
 <script setup>
+import router from '@/router';
+import { ref } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 import logo from '../assets/images/logo.png';
 
 const isActiveLink = (routePath) => {
   const route = useRoute();
   return route.path === routePath;
+};
+
+let isLogin = ref(false);
+const token = localStorage.getItem('token');
+
+const changeIsLoginStatus = () => {
+  if (token) {
+    isLogin = true;
+  } else {
+    isLogin = false;
+  }
+};
+
+const logout = () => {
+  localStorage.removeItem('token');
+  router.push('/login');
 };
 </script>
 
@@ -63,6 +81,13 @@ const isActiveLink = (routePath) => {
                 ]"
                 >Add Job
               </RouterLink>
+              <button
+                v-if="!isLogin"
+                @click="logout"
+                class="text-white px-3 py2 rounded-md bg-green-500 hover:bg-green-400"
+              >
+                Logut
+              </button>
             </div>
           </div>
         </div>
